@@ -16,6 +16,7 @@ info_keys='num_ctx_switches','cpu_percent','cpu_times','io_counters','num_thread
 [[postgres]]
 exe=^\/usr\/lib\/postgresql\/+d.+d\/bin\/postgres$
 name=^postgres,^pg
+username=postgres,hawk
 
 [[elasticsearch]]
 cmdline=java.*Elasticsearch
@@ -46,13 +47,14 @@ except ImportError:
     psutil = None
 
 
-def match_process(pid, name, cmdline, exe, cfg):
+def match_process(pid, name, username, cmdline, exe, cfg):
     """
     Decides whether a process matches with a given process descriptor
 
     :param pid: process pid
     :param exe: process executable
     :param name: process name
+    :param username: process user
     :param cmdline: process cmdline
     :param cfg: the dictionary from processes that describes with the
         process group we're testing for
@@ -66,6 +68,9 @@ def match_process(pid, name, cmdline, exe, cfg):
             return True
     for name_re in cfg['name']:
         if name_re.search(name):
+            return True
+    for username_re in cfg['username']:
+        if username_re.search(username):
             return True
     for cmdline_re in cfg['cmdline']:
         if cmdline_re.search(' '.join(cmdline)):
@@ -168,13 +173,14 @@ class ProcessResourcesCollector(diamond.collector.Collector):
         try:
             pid = get_value(process, 'pid')
             name = get_value(process, 'name')
+            username = get_value(process, 'username')
             cmdline = get_value(process, 'cmdline')
             try:
                 exe = get_value(process, 'exe')
             except psutil.AccessDenied:
                 exe = ""
             for pg_name, cfg in self.processes.items():
-                if match_process(pid, name, cmdline, exe, cfg):
+                if match_process(pid, name, username, cmdline, exe, cfg):
                     pi = process_info(process, self.config['info_keys'])
                     if cfg['count_workers']:
                         pi.update({'workers_count': 1})

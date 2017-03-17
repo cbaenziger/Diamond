@@ -38,6 +38,10 @@ class TestProcessResourcesCollector(CollectorTestCase):
             'bar': {
                 'name': '^bar',
             },
+            'init': {
+                'name': '^init',
+                'username': 'root'
+            },
             'barexe': {
                 'exe': 'bar$'
             },
@@ -71,6 +75,7 @@ class TestProcessResourcesCollector(CollectorTestCase):
             {
                 'exe': '/usr/lib/postgresql/9.1/bin/postgres',
                 'name': 'postgres',
+                'username': 'postgres',
                 'pid': 1427,
                 'rss': 1000000,
                 'vms': 1000000
@@ -78,6 +83,7 @@ class TestProcessResourcesCollector(CollectorTestCase):
             {
                 'exe': '',
                 'name': 'postgres: writer process   ',
+                'username': 'postgres',
                 'pid': 1445,
                 'rss': 100000,
                 'vms': 200000
@@ -85,6 +91,7 @@ class TestProcessResourcesCollector(CollectorTestCase):
             {
                 'exe': '',
                 'name': 'postgres: wal writer process   ',
+                'username': 'postgres',
                 'pid': 1446,
                 'rss': 10000,
                 'vms': 20000
@@ -92,6 +99,7 @@ class TestProcessResourcesCollector(CollectorTestCase):
             {
                 'exe': '',
                 'name': 'postgres: autovacuum launcher process   ',
+                'username': 'postgres',
                 'pid': 1447,
                 'rss': 1000,
                 'vms': 2000
@@ -99,6 +107,7 @@ class TestProcessResourcesCollector(CollectorTestCase):
             {
                 'exe': '',
                 'name': 'postgres: stats collector process   ',
+                'username': 'postgres',
                 'pid': 1448,
                 'rss': 100,
                 'vms': 200},
@@ -106,6 +115,7 @@ class TestProcessResourcesCollector(CollectorTestCase):
             {
                 'exe': '',
                 'name': 'posgre: not really',
+                'username': 'pos_user',
                 'pid': 9999,
                 'rss': 10,
                 'vms': 20,
@@ -113,6 +123,7 @@ class TestProcessResourcesCollector(CollectorTestCase):
             {
                 'exe': '/usr/bin/foo',
                 'name': 'bar',
+                'username': 'fooie',
                 'pid': 9998,
                 'rss': 1,
                 'vms': 1
@@ -120,6 +131,7 @@ class TestProcessResourcesCollector(CollectorTestCase):
             {
                 'exe': '',
                 'name': 'barein',
+                'username': 'rawr',
                 'pid': 9997,
                 'rss': 2,
                 'vms': 2
@@ -127,14 +139,24 @@ class TestProcessResourcesCollector(CollectorTestCase):
             {
                 'exe': '/usr/bin/bar',
                 'name': '',
+                'username': '',
                 'pid': 9996,
                 'rss': 3,
                 'vms': 3,
+            },
+            {
+                'exe': '/sbin/init',
+                'name': 'init',
+                'username': 'root',
+                'pid': 1,
+                'rss': 6064,
+                'vms': 119636,
             },
             # diamond self mon process
             {
                 'exe': 'DUMMY',
                 'name': 'DUMMY',
+                'username': 'nobody',
                 'pid': self.SELFMON_PID,
                 'rss': 1234,
                 'vms': 4,
@@ -162,6 +184,7 @@ class TestProcessResourcesCollector(CollectorTestCase):
                 cputimes = namedtuple('cputimes', 'user system')
                 thread = namedtuple('thread', 'id user_time system_time')
                 user = namedtuple('user', 'real effective saved')
+                username = namedtuple('username', ' process uid')
                 group = namedtuple('group', 'real effective saved')
                 ionice = namedtuple('ionice', 'ioclass value')
                 amount = namedtuple('amount', 'voluntary involuntary')
