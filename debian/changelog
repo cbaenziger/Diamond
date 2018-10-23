@@ -1,3 +1,10 @@
+diamond (4.0.732) unstable; urgency=low
+
+  * Last Commit: (2017-03-03 15:31:25 -0800)
+    5b127172e6de1c1779962717fd4a12f62077afb2 GitHub <noreply@github.com>
+
+ -- cbaenzig <cbaenzig@clay-desktop>  Sat, 04 Mar 2017 18:00:54 -0500
+
 diamond (4.0.0) unstable; urgency=low
   * new upstream
  -- Rob Smith <kormoc@gmail.com>  Wed, 31 Dec 2014 15:19:00 -0800
