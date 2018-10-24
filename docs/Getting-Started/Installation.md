@@ -38,7 +38,7 @@ $ $EDITOR /etc/diamond/diamond.conf
 
 ```sh
 $ apt-get update
-$ apt-get install make pbuilder python-mock python-configobj python-support cdbs devscripts build-essential
+$ apt-get install make pbuilder python-mock python-configobj dh-python cdbs devscripts build-essential
 $ git clone https://github.com/python-diamond/Diamond
 $ cd Diamond
 $ make builddeb

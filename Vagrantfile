@@ -44,10 +44,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.define "ubuntu-build" do |c|
     c.vm.hostname = "ubuntu-build"
-    c.vm.box = "bento/ubuntu-12.04"
+    c.vm.box = "bento/ubuntu-16.04"
 
     c.vm.provision "shell", inline: "sudo apt-get update"
-    c.vm.provision "shell", inline: "sudo apt-get install -y make git pbuilder python-mock python-configobj python-support cdbs"
+    c.vm.provision "shell", inline: "sudo apt-get install -y make git pbuilder python-mock python-configobj dh-python cdbs"
     c.vm.provision "shell", inline: "cp -rf /vagrant /tmp/Diamond"
     c.vm.provision "shell", inline: "cd /tmp/Diamond && make deb"
     c.vm.provision "shell", inline: "mkdir -p /vagrant/dist/deb && (cp -f /tmp/Diamond/build/*.deb /vagrant/dist/deb/ || grep -v 'cannot stat')"
